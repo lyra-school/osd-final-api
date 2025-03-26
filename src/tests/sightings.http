@@ -1,0 +1,124 @@
+@endpoint = http://localhost:3000/sightings
+@extractedId = {{testCase.response.headers.location}}
+###
+GET {{endpoint}} HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}?pageSize=2 HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}?page=2 HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}?page=2&pageSize=2 HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/67119acce4b46a3090d7486e HTTP/1.1
+content-type: application/json
+###
+###
+GET {{endpoint}}/670e8196e5fec7aa3fdecccd HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/{{extractedId}} HTTP/1.1
+content-type: application/json
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-18", 
+  "location": {
+    "habitat": "This one will fail because it's missing a required field" },
+  "description" : "Hey I saw stuff there",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-18", 
+  "description" : "Hey, this one is missing the location and will pass!",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-18", 
+  "location": {
+    "habitat": "Who knows",
+    "area": "Middle of nowhere" },
+  "description" : "Hey I saw stuff there",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "This will fail because of a bad link, though this field can otherwise be left out."
+}
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "This one fails due to malformed date", 
+  "location": {
+    "habitat": "Who knows",
+    "area": "Middle of nowhere" },
+  "description" : "Hey I saw stuff there",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-18", 
+  "location": {
+    "habitat": "Who knows",
+    "area": "Middle of nowhere" },
+  "description" : "This one fails due to an empty array.",
+  "birds": [ ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+# @name testCase
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-18", 
+  "location": {
+    "habitat": "Who knows",
+    "area": "Middle of nowhere" },
+  "description" : "Hey I saw stuff there",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+PUT {{endpoint}}/{{extractedId}} HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-20", 
+  "location": {
+    "habitat": "Vandalized",
+    "area": "Vandalized" },
+  "description" : "Vandalized",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+DELETE {{endpoint}}/{{extractedId}} HTTP/1.1 
+content-type: application/json
+###
+PUT {{endpoint}}/670e8196e5fec7aa3fdecccd HTTP/1.1 
+content-type: application/json
+
+{ "date" : "2024-10-20", 
+  "location": {
+    "habitat": "Vandalized",
+    "area": "Vandalized" },
+  "description" : "Vandalized",
+  "birds": [ "670e8196e5fec7aa3fdecdcd" ],
+  "imageLink": "https://cdn.discordapp.com/attachments/935449218175344650/1296541432311713935/IMG-20241017-WA0000.jpg?ex=6713528e&is=6712010e&hm=a510c6961d858cb13ad20bc0d43298179928bf7ebecd67a25be1324e763a20dc&"
+}
+###
+DELETE {{endpoint}}/670e8196e5fec7aa3fdecccd HTTP/1.1 
+content-type: application/json
+###

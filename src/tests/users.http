@@ -1,0 +1,34 @@
+@endpoint = http://localhost:3000/users
+@extractedId = {{testCase.response.headers.location}}
+
+GET {{endpoint}} HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/{{extractedId}} HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/6764071509c3d9176c808bcf HTTP/1.1
+content-type: application/json
+###
+# @name testCase
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "name":"Some User",
+  "email": "email@gmail.com",
+  "password": "passwordlicious"
+}
+###
+POST {{endpoint}}/admin HTTP/1.1
+content-type: application/json
+
+{ "name":"Admin Man",
+  "email": "admin@gmail.com",
+  "password": "passwordlicious"
+}
+###
+PUT {{endpoint}}/{{extractedId}} HTTP/1.1
+content-type: application/json
+
+{ "about": "Hello!"
+}

@@ -1,0 +1,56 @@
+@endpointUsers = http://localhost:3000/users
+@endpointBirds = http://localhost:3000/birds
+@endpointSightings = http://localhost:3000/sightings
+@endpointAuth = http://localhost:3000/auth
+
+@extractedIdBird = {{testCase.response.headers.location}}
+
+@accessToken = {{login.response.body.accessToken}}
+@adminAccess = {{loginAdmin.response.body.accessToken}}
+
+# @name login
+POST {{endpointAuth}} HTTP/3.0
+content-type: application/json
+
+{ 
+  "email": "email@gmail.com",
+  "password": "passwordlicious"
+}
+###
+# @name loginAdmin
+POST {{endpointAuth}} HTTP/3.0
+content-type: application/json
+
+{
+   "email": "admin@gmail.com",
+   "password" : "passwordlicious"
+}
+
+###
+# @name testCase
+POST {{endpointBirds}} HTTP/1.1 
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+
+{ "type" : "Eurasian Blackbird", 
+  "latinName" : "Turdus merula", 
+  "family": "Turdidae",
+  "familyAlternateName":"Thrushes",
+  "owner":"6763685c72c7e2e47e85dcea"}
+###
+DELETE {{endpointBirds}}/{{extractedIdBird}} HTTP/1.1 
+content-type: application/json
+Authorization: Bearer {{accessToken}}
+###
+DELETE {{endpointBirds}}/{{extractedIdBird}} HTTP/1.1 
+content-type: application/json
+Authorization: Bearer {{adminAccess}}
+###
+PUT {{endpointBirds}}/{{extractedIdBird}} HTTP/1.1 
+content-type: application/json
+Authorization: Bearer {{adminAccess}}
+
+{
+  "family": "I vandalized this"
+}
+###

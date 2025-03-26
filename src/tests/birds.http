@@ -1,0 +1,77 @@
+@endpoint = http://localhost:3000/birds
+@extractedId = {{testCase.response.headers.location}}
+###
+GET {{endpoint}} HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/family/Columbidae HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/670e8196e5fec7aa3fdecdcd HTTP/1.1
+content-type: application/json
+###
+GET {{endpoint}}/670e8196e5fec7aa3fdecccd HTTP/1.1
+content-type: application/json
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "type" : "This fails because it's missing required fields." }
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "type" : "This fails because of string lengthAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+  "latinName" : "Turdus merula", 
+  "family": "Turdidae",
+  "familyAlternateName":"Thrushes"}
+###
+# @name testCase
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "type" : "Eurasian Blackbird", 
+  "latinName" : "Turdus merula", 
+  "family": "Turdidae",
+  "familyAlternateName":"Thrushes"}
+###
+GET {{endpoint}}/{{extractedId}} HTTP/1.1 
+content-type: application/json
+###
+PUT {{endpoint}}/{{extractedId}} HTTP/1.1 
+content-type: application/json
+
+{ "type" : "Eurasian Blackbird", 
+  "latinName" : "Vandalized", 
+  "family": "Vandalized",
+  "familyAlternateName":"Vandalized"}
+###
+PUT {{endpoint}}/{{extractedId}} HTTP/1.1 
+content-type: application/json
+
+{
+  "latinName" : "This succeeds as all fields are optional for updates."
+}
+###
+PUT {{endpoint}}/670e8196e5fec7aa3fdecccd HTTP/1.1 
+content-type: application/json
+
+{
+  "latinName" : "This is the one that fails"
+}
+###
+DELETE {{endpoint}}/{{extractedId}} HTTP/1.1 
+content-type: application/json
+###
+DELETE {{endpoint}}/670e8196e5fec7aa3fdecccd HTTP/1.1 
+content-type: application/json
+###
+POST {{endpoint}} HTTP/1.1 
+content-type: application/json
+
+{ "type" : "Eurasian Blackbird", 
+  "latinName" : "Turdus merula", 
+  "family": "Turdidae",
+  "familyAlternateName":"Thrushes",
+  "extraField":"This fails because extra fields are not accepted."}
+###
