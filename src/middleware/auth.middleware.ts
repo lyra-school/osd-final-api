@@ -71,6 +71,7 @@ export const isOwnerOrAdmin = async (
 
     if(id && user_id && id == user_id) {
         next();
+        return;
     }
     const role = res.locals?.payload?.role;
     if (role && role == 'admin') {
