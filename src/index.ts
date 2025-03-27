@@ -5,12 +5,15 @@ import birdRouter from './routes/birds';
 import sightingRouter from './routes/sightings';
 import userRouter from './routes/users';
 import authRouter from './routes/auth';
+const cors = require('cors');
 
 dotenv.config();
 
 const PORT = process.env.PORT || 3000;
 
 const app: Application = express();
+
+app.use(cors());
 
 app.use(morgan("tiny"));
 
