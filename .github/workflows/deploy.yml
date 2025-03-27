@@ -53,10 +53,9 @@ jobs:
         fi
 
         cd ~/osd-final-api
-        echo "port: $PORT"
         git pull origin master
         npm ci
-        echo -e '"PORT=$PORT\nDB_NAME=$DB_NAME\nDB_CONN_STRING=$DB_CONN_STRING"' > .env
+        printf "'"PORT=$PORT\nDB_NAME=$DB_NAME\nDB_CONN_STRING=$DB_CONN_STRING"'" > .env
         npm run build
         
 
