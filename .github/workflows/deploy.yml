@@ -52,12 +52,9 @@ jobs:
           cd "$REPO_DIR"
         fi
 
-        cd "$REPO_DIR"
-        npm install
-
         cd ~/osd-final-api
         git pull origin master
-        npm install
+        npm ci
         echo -e "PORT=$PORT\nDB_NAME=$DB_NAME\nDB_CONN_STRING=$DB_CONN_STRING" > .env
         npm run build
         

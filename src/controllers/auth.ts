@@ -54,7 +54,7 @@ export const handleLogin = async (req: Request, res: Response) => {
 const createAccessToken = (user: User | null): string => {
 
     const secret = process.env.JWTSECRET || "not very secret";
-    const expiresTime = process.env.JWTEXPIRES || 60;
+    const expiresTime = process.env.JWTEXPIRES || 3600;
     console.log(expiresTime);
     const payload =
     {
