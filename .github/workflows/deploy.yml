@@ -62,5 +62,5 @@ jobs:
         
 
         echo "Starting/restarting application..."
-        pm2 restart index.js || pm2 start index.js
+        pm2 restart build/index.js || pm2 start build/index.js
         '
